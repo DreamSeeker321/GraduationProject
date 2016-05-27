@@ -1,0 +1,44 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title WEBGIS
+    style(type='text/css').
+      html{
+      height:100%;
+      margin: 10px 10px;
+      }
+      body{
+      height:100%;
+      margin:0px;
+      padding:0px
+      }
+      #info_block{
+      width: 24.555%;
+      height: 100%;
+      float: left;
+      border: 1px solid gray;
+      }
+      #Map{width: 75%;
+      height: 100%;
+      border: 1px solid gray;
+      float: right;
+      }
+  body
+    #info_block
+    #Map
+    script(type='text/javascript').
+      //百度地图API功能
+      function loadJScript() {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "http://api.map.baidu.com/api?v=2.0&ak=K76CbktY8k4YGa4NM92tlviE2rChtNBY&callback=init";
+      document.body.appendChild(script);
+      }
+      function init() {
+      var map = new BMap.Map("Map");           	 // 创建Map实例
+      var point = new BMap.Point(119.606184,39.941259); // 创建点坐标
+      map.centerAndZoom(point,19);
+      map.enableScrollWheelZoom();               //启用滚轮放大缩小
+      }
+      window.onload = loadJScript;  //异步加载地图

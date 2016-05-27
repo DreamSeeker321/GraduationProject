@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>WEBGIS</title>
+	<link rel="stylesheet" href="stylesheets/reset.css">
+	<style type="text/css">
+		html{
+			height:100%;
+			margin: 10px 10px;
+		}
+		body{
+			height:100%;
+			margin:0px;
+			padding:0px;
+		}
+		#info_block{
+			width: 24.555%;
+			height: 90%;
+			float: left;
+			border: 1px solid gray;
+		}
+		#Map{width: 75%;
+			height: 90%;
+			border: 1px solid gray;
+			float: right;
+		}
+		#info_block h1{
+			margin-left:5px;
+			margin-top: 5px;
+		}
+		.option ul{
+			width: 100%;
+		}
+		.option ul li{
+			width: 32.3333%;
+			border:1px solid gray;
+			float: left;
+			text-align: center;
+			line-height: 150%;
+			cursor: pointer;
+		}
+		.content1,.content2,.content3{
+			width: 100%;
+		}
+		.content2,.content3{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div id = 'info_block'>
+		<h1>车辆信息栏</h1>
+		<div class = 'option'>
+			<ul>
+				<li class = 'option1'>车辆信息</li>
+				<li class = 'option2'>车辆位置</li>
+				<li class = 'option3'>车辆历史轨迹</li>
+			</ul>
+			<div>
+				<div class = "content1">
+					<p>车辆信息内容</p>
+				</div>
+				<div class = "content2">
+					<p>车辆位置内容</p>
+				</div>
+				<div class = "content3">
+					<p>车辆历史轨迹信息</p>内容
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="Map"></div>
+
+
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=K76CbktY8k4YGa4NM92tlviE2rChtNBY">
+	</script>
+	<script type="text/javascript" src = 'javascripts/jquery-1.11.1.js'></script>
+	<script type="text/javascript">
+	//百度地图API功能
+		var map = new BMap.Map("Map", {enableMapClick:false});          // 创建地图实例，关闭poi
+		var point = new BMap.Point(119.528063,39.912275);  // 创建点坐标  燕山大学 119.528456,39.912297
+		map.enableScrollWheelZoom();				  //开启鼠标滚动
+		map.centerAndZoom(point, 20);
+
+
+		map.addControl(new BMap.NavigationControl());
+		map.addControl(new BMap.ScaleControl());
+		map.addControl(new BMap.OverviewMapControl());
+		map.addControl(new BMap.MapTypeControl());
+
+		// var map = new BMap.Map("allmap",{minZoom:4,maxZoom:30}); // 创建Map实例,设置地图允许的最小/大级别
+
+		var marker = new BMap.Marker(point);  // 创建标注
+		map.addOverlay(marker);               // 将标注添加到地图中
+
+		var currentLocation ={
+			lng:0,
+			lat:0
+		}
+		//marker.enableDragging(); //鼠标拖拽
+
+		marker.addEventListener("dragend", function(e){
+			currentLocation.lng = e.point.lng;
+			currentLocation.lat = e.point.lat;
+
+			$('.content2 p').text('车辆位置'+currentLocation.lng+','+currentLocation.lat);
+		 console.log(currentLocation.lng+','+currentLocation.lat)
+		 // alert("当前位置：" + e.point.lng + ", " + e.point.lat);
+		})//lng是经度，lat是纬度
+
+		var opts = {
+		 width : 250,     // 信息窗口宽度
+		 height: 100,     // 信息窗口高度
+		 title : "车辆A"  // 信息窗口标题
+		}
+		var infoWindow = new BMap.InfoWindow("车辆具体信息 冀CE082", opts);  // 创建信息窗口对象
+		map.openInfoWindow(infoWindow, map.getCenter());      // 打开信息窗口
+
+
+
+
+		//选项卡
+		$('.option1').click(function(){
+			$('.content1').css('display','block').siblings().css('display','none');
+		})
+		$('.option2').click(function(){
+			$('.content2').css('display','block').siblings().css('display','none');
+		})
+		$('.option3').click(function(){
+			$('.content3').css('display','block').siblings().css('display','none');
+		})
+
+
+
+</script>
+</body>
+</html>

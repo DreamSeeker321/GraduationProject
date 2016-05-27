@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>鹰眼</title>
+</head>
+
+<body>
+<form method="post" action="http://api.map.baidu.com/trace/v2/entity/add">
+<input type='text' name="ak" value="K76CbktY8k4YGa4NM92tlviE2rChtNBY">
+<input type='text' name="service_id" value="117728">
+<input type='text' name="entity_name" value="self">
+<input type="submit">
+</form>
+
+<form  target="pos" id="position" method="post" action="http://api.map.baidu.com/trace/v2/track/addpoint">
+<input type='text' id="ak" name="ak" value="K76CbktY8k4YGa4NM92tlviE2rChtNBY">
+<input type='text' id="service_id" name="service_id" value="117728">
+<input type='text' id="entity_name" name="entity_name" value="02">
+<input type='text' id="longitude" name="longitude" value="119.428456">
+<input type='text' id="latitude" name="latitude" value="39.812297">
+<input type='text' id="coord_type" name="coord_type" value="1">
+<input type='text' id="loc_time" name="loc_time" value="1464313753">
+<input type="submit" id="sub">
+</form>
+
+<iframe id="pos" name="pos">
+</iframe>
+<script type="text/javascript">
+window.onload=function(){
+    var sub=document.getElementById('sub');
+    var ak=document.getElementById('ak');
+    var service_id=document.getElementById('service_id');
+    var entity_name=document.getElementById('entity_name');
+    var longitude=document.getElementById('longitude');
+    var latitude=document.getElementById('latitude');
+    var loc_time=document.getElementById('loc_time');
+
+getLocation();
+
+// get position
+	var pos;
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(showPosition, showError);
+        } else {
+            return "Geolocation is not supported by this browser.";
+
+        }
+    }
+
+    function showPosition(position) {
+        latitude.value = position.coords.latitude;
+        longitude.value = position.coords.longitude;
+
+		loc_time.value=Math.ceil(new Date().getTime()/1000);
+		console.log( position.coords.latitude);
+		sub.click();
+    }
+
+    function showError(error) {
+
+        switch (error.code) {
+        case error.PERMISSION_DENIED:
+            return "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            return "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            return "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            return "An unknown error occurred."
+            break;
+        }
+    }
+
+}
+</script>
+</body>
+
+</html>
